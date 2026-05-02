@@ -1,0 +1,164 @@
+# 📘 SQL – Notes (Revision + Placement Ready)
+
+## 🔹 What is SQL?
+
+* SQL (Structured Query Language) is used to:
+
+  * Access databases
+  * Manipulate data
+* It is a **standard language** for database operations
+
+📌 Standards:
+
+* ANSI (1986)
+* ISO (1987)
+
+🎯 Placement Note:
+
+* Mostly used to **write queries to fetch and manage data**
+
+---
+
+## 🔹 SQL Standard
+
+* SQL follows ANSI/ISO standards
+* Different versions exist
+* All support common commands:
+
+  * `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `WHERE`
+
+🎯 Placement Note:
+
+* Syntax is almost same across databases → learn once, apply anywhere
+
+---
+
+## 🔹 RDBMS
+
+* Relational Database Management System
+* SQL works on RDBMS
+
+📌 Data is stored in:
+
+* Tables
+
+  * Rows → Records
+  * Columns → Fields
+
+📌 Examples:
+
+* MySQL
+* Oracle
+* MS SQL Server
+* IBM DB2
+* Microsoft Access
+
+🎯 Placement Note:
+
+* Always think in **table format (rows + columns)** when writing queries
+
+---
+
+## 🔹 SQL Case Sensitivity
+
+* SQL keywords are **NOT case-sensitive**
+
+  * `SELECT` = `select`
+
+🎯 Placement Note:
+
+* In interviews, uppercase is preferred for readability
+
+---
+
+## 🔹 Important SQL Commands
+
+| Command           | Purpose      |
+| ----------------- | ------------ |
+| `SELECT`          | Extract data |
+| `INSERT INTO`     | Insert data  |
+| `UPDATE`          | Modify data  |
+| `DELETE`          | Remove data  |
+| `CREATE DATABASE` | Create DB    |
+| `ALTER DATABASE`  | Modify DB    |
+| `CREATE TABLE`    | Create table |
+| `ALTER TABLE`     | Modify table |
+| `DROP TABLE`      | Delete table |
+| `CREATE INDEX`    | Create index |
+| `DROP INDEX`      | Delete index |
+
+🎯 Placement Note:
+
+* Focus more on: `SELECT`, `INSERT`, `UPDATE`, `DELETE`
+
+---
+
+## 🔹 SELECT Statement
+
+* Used to **retrieve data from a table**
+
+### Syntax:
+
+```sql id="9ztlzg"
+SELECT column1, column2, ...
+FROM table_name;
+```
+
+### Select All:
+
+```sql id="rf0xt4"
+SELECT * FROM table_name;
+```
+
+🎯 Placement Note:
+
+* `SELECT *` is easy but not efficient → prefer specific columns
+
+---
+
+## 🔹 SELECT DISTINCT
+
+* Returns **unique values only**
+* Removes duplicates
+
+### Syntax:
+
+```sql id="uk9k6l"
+SELECT DISTINCT column_name
+FROM table_name;
+```
+
+### Example:
+
+```sql id="m6v44u"
+SELECT DISTINCT Country FROM Customers;
+```
+
+🎯 Placement Note:
+
+* Frequently used in real queries to clean duplicate data
+
+---
+
+## 🔹 COUNT with DISTINCT
+
+* Counts **unique values**
+
+### Syntax:
+
+```sql id="n4rbcj"
+SELECT COUNT(DISTINCT column_name)
+FROM table_name;
+```
+
+### Example:
+
+```sql id="y8ql6o"
+SELECT COUNT(DISTINCT Country) FROM Customers;
+```
+
+🎯 Placement Note:
+
+* Common in analytics questions (e.g., unique users, unique countries)
+
+---
