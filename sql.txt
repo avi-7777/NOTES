@@ -55,3 +55,153 @@ By using the COUNT() function with the DISTINCT keyword, we can count the number
 
 Example
 SELECT COUNT(DISTINCT Country) FROM Customers;
+
+The SQL WHERE Clause
+The WHERE clause is used to filter records.
+
+The WHERE clause is used to extract only those records that fulfill a specific condition.
+WHERE Syntax
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+
+Note: The WHERE clause is not only used in SELECT statements, it is also used in UPDATE, DELETE, etc.
+Text Fields vs. Numeric Fields
+SQL requires single quotes around text values (most database systems will also allow double quotes).
+
+However, numeric fields should not be enclosed in quotes:
+Operator	Description
+=	Equal
+>	Greater than	
+<	Less than
+>=	Greater than or equal	
+<=	Less than or equal
+<>	Not equal. Note: In some versions of SQL this operator may be written as !=
+BETWEEN	Between a certain range
+LIKE	Search for a pattern
+IN	To specify multiple possible values for a column
+
+SELECT * FROM Products
+WHERE Price BETWEEN 50 AND 60;
+
+SELECT * FROM Customers
+WHERE City LIKE 's%';
+​
+The SQL ORDER BY
+The ORDER BY keyword is used to sort the result-set in ascending or descending order.
+
+The ORDER BY keyword sorts the result-set in ascending order (ASC) by default
+ORDER BY Syntax
+SELECT column1, column2, ...
+FROM table_name
+ORDER BY column1, column2, ... ASC|DESC;
+
+SELECT * FROM Products
+ORDER BY ProductName;
+
+The SQL AND OR NOT Operator
+The WHERE clause can contain one or many AND operators.
+
+The AND operator is used to filter records based on more than one condition.
+
+Note: The AND operator displays a record if all the conditions are TRUE.
+SELECT *
+FROM Customers
+WHERE Country = 'Spain' AND CustomerName LIKE 'G%';
+AND Syntax
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition1 AND condition2 AND condition3 ...;
+
+The SQL OR Operator
+The WHERE clause can contain one or more OR operators.
+
+The OR operator is used to filter records based on more than one condition.
+
+Note: The OR operator displays a record if any of the conditions are TRUE.
+OR Syntax
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition1 OR condition2 OR condition3 ...;
+
+The NOT Operator
+The NOT operator is used in the WHERE clause to return all records that DO NOT match the specified criteria. It reverses the result of a condition from true to false and vice-versa.
+
+The following SQL selects all customers that are NOT from Spain:
+
+NOT Syntax
+SELECT column1, column2, ...
+FROM table_name
+WHERE NOT condition;
+
+The NOT LIKE Operator
+The NOT LIKE operator is used in the WHERE clause to exclude rows that match a specified character pattern.
+
+There are two wildcards often used in conjunction with the NOT LIKE operator:
+
+A percent sign % - represents zero, one, or multiple characters
+A underscore sign _ - represents a single character
+The following SQL selects all customers that do NOT start with the letter "A":
+
+Example
+Select customers that does not start with the letter 'A':
+
+SELECT * FROM Customers
+WHERE CustomerName NOT LIKE 'A%';
+
+
+The SQL INSERT INTO Statement
+The INSERT INTO statement is used to insert new records in a table.
+
+It is possible to write the INSERT INTO statement in two ways:
+
+Syntax 1
+Specify both the column names and the values to be inserted:
+
+INSERT INTO table_name (column1, column2, column3, ...)
+VALUES (value1, value2, value3, ...);
+
+Syntax 2
+If you insert values for ALL the columns of the table, you can omit the column names.
+
+However, the order of the values must be in the same order as the columns in the table:
+
+INSERT INTO table_name
+VALUES (value1, value2, value3, ...);
+
+SQL NULL Values
+What is a NULL Value?
+If a field in a table is optional, it is possible to insert or update a record without adding any value to this field. This way, the field will be saved with a NULL value.
+
+A NULL value represents an unknown, missing, or inapplicable data in a database field. It is not a value itself, but a placeholder to indicate the absence of data.
+
+Note: A NULL value is different from zero (0) or an empty string (''). A field with a NULL value is one that has been left blank upon record creation.
+
+How to Test for NULL Values?
+It is not possible to test for NULL values with comparison operators, such as =, <, or <>.
+
+We will have to use the IS NULL and IS NOT NULL operators instead.
+
+IS NULL Syntax
+SELECT column_names
+FROM table_name
+WHERE column_name IS NULL;
+
+IS NOT NULL Syntax
+SELECT column_names
+FROM table_name
+WHERE column_name IS NOT NULL;
+
+The SQL UPDATE Statement
+The UPDATE statement is used to update or modify one or more records in a table.
+
+UPDATE Syntax
+UPDATE table_name
+SET column1 = value1, column2 = value2, ...
+WHERE condition;
+
+Note: Be careful when updating records in a table! Notice the WHERE clause in the UPDATE statement. The WHERE clause specifies which record(s) that should be updated. If you omit the WHERE clause, all records in the table will be updated!
+
+UPDATE Customers
+SET ContactName = 'Alfred Schmidt', City= 'Frankfurt'
+WHERE CustomerID = 1;
