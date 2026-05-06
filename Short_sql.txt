@@ -343,5 +343,209 @@ SELECT TOP 50 PERCENT * FROM table;
 
 ---
 
+Here are your **placement-ready revision notes** for **SQL Aggregate Functions + LIKE + IN + BETWEEN + Aliases** (clean, short, high-value 👇)
 
+---
 
+# 📊 SQL Aggregate Functions (Core Concept)
+
+👉 Perform calculation on **multiple rows → return single value**
+
+### 🔹 Key Points
+
+* Used with **GROUP BY**
+* Ignore **NULL values** *(except `COUNT(*)`)*
+* Output = **single value per group**
+
+---
+
+## 🔹 Aggregate Functions Table
+
+| Function  | Description    | Example                             |
+| --------- | -------------- | ----------------------------------- |
+| `MIN()`   | Smallest value | `SELECT MIN(Price) FROM Products;`  |
+| `MAX()`   | Largest value  | `SELECT MAX(Price) FROM Products;`  |
+| `COUNT()` | Number of rows | `SELECT COUNT(*) FROM Products;`    |
+| `SUM()`   | Total sum      | `SELECT SUM(Quantity) FROM Orders;` |
+| `AVG()`   | Average value  | `SELECT AVG(Price) FROM Products;`  |
+
+---
+
+## 🔹 Important Concepts
+
+### 1️⃣ MIN() / MAX()
+
+* Works on **number, string, date**
+
+```sql
+SELECT MIN(Price) AS SmallestPrice FROM Products;
+SELECT MAX(Price) FROM Products;
+```
+
+👉 With GROUP BY:
+
+```sql
+SELECT MAX(Price), CategoryID
+FROM Products
+GROUP BY CategoryID;
+```
+
+---
+
+### 2️⃣ COUNT()
+
+| Type                  | Meaning                   |
+| --------------------- | ------------------------- |
+| `COUNT(*)`            | All rows (including NULL) |
+| `COUNT(column)`       | Non-null values           |
+| `COUNT(DISTINCT col)` | Unique non-null values    |
+
+```sql
+SELECT COUNT(*) FROM Products;
+SELECT COUNT(ProductID) FROM Products WHERE Price > 20;
+```
+
+---
+
+### 3️⃣ SUM()
+
+* Only for **numeric columns**
+
+```sql
+SELECT SUM(Quantity) FROM OrderDetails;
+```
+
+👉 With expression:
+
+```sql
+SELECT SUM(Quantity * 10) FROM OrderDetails;
+```
+
+---
+
+### 4️⃣ AVG()
+
+```sql
+SELECT AVG(Price) FROM Products;
+```
+
+---
+
+# 🔍 SQL LIKE Operator (Pattern Matching)
+
+👉 Used in `WHERE` for **searching patterns**
+
+## 🔹 Wildcards
+
+| Symbol | Meaning              |
+| ------ | -------------------- |
+| `%`    | 0 or more characters |
+| `_`    | Exactly 1 character  |
+
+---
+
+## 🔹 Common Patterns
+
+| Use Case                      | Query         |
+| ----------------------------- | ------------- |
+| Starts with 'A'               | `LIKE 'A%'`   |
+| Ends with 'a'                 | `LIKE '%a'`   |
+| Contains 'or'                 | `LIKE '%or%'` |
+| Second letter 'r'             | `LIKE '_r%'`  |
+| At least 3 chars starting 'a' | `LIKE 'a__%'` |
+
+```sql
+SELECT * FROM Customers WHERE Name LIKE 'A%';
+```
+
+---
+
+# 🔹 SQL IN Operator
+
+👉 Shortcut for multiple `OR` conditions
+
+```sql
+SELECT * FROM Customers
+WHERE Country IN ('India','USA','UK');
+```
+
+### NOT IN
+
+```sql
+WHERE Country NOT IN ('India','USA');
+```
+
+### IN with Subquery
+
+```sql
+SELECT * FROM Customers
+WHERE CustomerID IN (SELECT CustomerID FROM Orders);
+```
+
+---
+
+# 🔹 SQL BETWEEN Operator
+
+👉 Used for **range (inclusive)**
+
+```sql
+SELECT * FROM Products
+WHERE Price BETWEEN 10 AND 20;
+```
+
+### NOT BETWEEN
+
+```sql
+WHERE Price NOT BETWEEN 10 AND 20;
+```
+
+---
+
+# 🔹 SQL Aliases (AS)
+
+👉 Temporary name for column/table
+
+## Column Alias
+
+```sql
+SELECT CustomerName AS Name FROM Customers;
+```
+
+## Table Alias
+
+```sql
+SELECT c.CustomerName
+FROM Customers AS c;
+```
+
+---
+
+# 🔥 Final Quick Revision
+
+* **Aggregate = multiple → single value**
+* **COUNT(*) includes NULL, others ignore NULL**
+* **LIKE = pattern search (`%`, `_`)**
+* **IN = multiple OR shortcut**
+* **BETWEEN = range (inclusive)**
+* **Alias = temporary name using AS**
+
+---
+
+## 🚀 Placement Tips
+
+* Frequently asked:
+
+  * `COUNT(*) vs COUNT(col)`
+  * `GROUP BY + MAX/MIN`
+  * `LIKE patterns`
+  * `IN vs EXISTS (advanced next step)`
+* Practice combining:
+
+```sql
+SELECT COUNT(*), Country
+FROM Customers
+GROUP BY Country
+HAVING COUNT(*) > 5;
+```
+
+---
