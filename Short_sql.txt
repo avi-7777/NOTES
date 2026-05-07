@@ -549,3 +549,272 @@ HAVING COUNT(*) > 5;
 ```
 
 ---
+# SQL Placement Ready Short Notes
+
+---
+
+# JOINS
+
+## 1. INNER JOIN
+
+* Returns only matching rows from both tables.
+* `JOIN` = `INNER JOIN`
+
+```sql id="9pb0h4"
+SELECT *
+FROM A
+INNER JOIN B
+ON A.id = B.id;
+```
+
+✅ Match in both tables required.
+
+---
+
+## 2. LEFT JOIN
+
+* Returns all rows from left table.
+* Matching rows from right table.
+* No match → `NULL`
+
+```sql id="ld0r4q"
+SELECT *
+FROM A
+LEFT JOIN B
+ON A.id = B.id;
+```
+
+✅ Left table fully preserved.
+
+---
+
+## 3. RIGHT JOIN
+
+* Returns all rows from right table.
+* Matching rows from left table.
+* No match → `NULL`
+
+```sql id="3q1mow"
+SELECT *
+FROM A
+RIGHT JOIN B
+ON A.id = B.id;
+```
+
+✅ Right table fully preserved.
+
+---
+
+## 4. FULL JOIN
+
+* Returns all rows from both tables.
+* Matched + unmatched rows.
+
+```sql id="0h5br8"
+SELECT *
+FROM A
+FULL JOIN B
+ON A.id = B.id;
+```
+
+✅ All data from both tables.
+
+---
+
+## 5. SELF JOIN
+
+* Table joined with itself.
+
+```sql id="5p2h1k"
+SELECT *
+FROM Employee E1, Employee E2
+WHERE E1.manager_id = E2.emp_id;
+```
+
+✅ Used for hierarchy/manager relation.
+
+---
+
+# JOIN MEMORY TRICK
+
+| Join Type | Meaning                  |
+| --------- | ------------------------ |
+| INNER     | Common rows only         |
+| LEFT      | All left + matched right |
+| RIGHT     | All right + matched left |
+| FULL      | Everything from both     |
+
+---
+
+# UNION
+
+## UNION
+
+* Combines rows vertically.
+* Removes duplicates.
+
+```sql id="u3j9df"
+SELECT name FROM A
+UNION
+SELECT name FROM B;
+```
+
+---
+
+## UNION ALL
+
+* Combines rows vertically.
+* Keeps duplicates.
+
+```sql id="nh8w2z"
+SELECT name FROM A
+UNION ALL
+SELECT name FROM B;
+```
+
+---
+
+# UNION RULES
+
+✅ Same number of columns
+✅ Similar data types
+✅ Same order of columns
+
+---
+
+# MEMORY TRICK
+
+| Operation | Direction  |
+| --------- | ---------- |
+| UNION     | Up-Down    |
+| JOIN      | Left-Right |
+
+---
+
+# GROUP BY
+
+* Makes groups of same values.
+* Used with aggregate functions.
+
+Functions:
+
+* `COUNT()`
+* `SUM()`
+* `AVG()`
+* `MAX()`
+* `MIN()`
+
+```sql id="pc7d3n"
+SELECT department, COUNT(*)
+FROM Employees
+GROUP BY department;
+```
+
+✅ Groups rows with same department.
+
+---
+
+# HAVING
+
+* Filters groups after `GROUP BY`.
+
+```sql id="ev4u8m"
+SELECT department, COUNT(*)
+FROM Employees
+GROUP BY department
+HAVING COUNT(*) > 2;
+```
+
+---
+
+# WHERE vs HAVING
+
+| WHERE                 | HAVING              |
+| --------------------- | ------------------- |
+| Filters rows          | Filters groups      |
+| Before grouping       | After grouping      |
+| No aggregate normally | Used with aggregate |
+
+---
+
+# EXISTS
+
+* Checks whether subquery returns rows.
+
+```sql id="n1c7qf"
+SELECT name
+FROM Customers c
+WHERE EXISTS (
+    SELECT *
+    FROM Orders o
+    WHERE c.id = o.customer_id
+);
+```
+
+✅ TRUE if at least one row exists.
+
+---
+
+# ANY
+
+* Condition true for at least one value.
+
+```sql id="4g5szq"
+SELECT *
+FROM Products
+WHERE price > ANY (
+    SELECT price
+    FROM Expensive_Items
+);
+```
+
+✅ At least one match required.
+
+---
+
+# ALL
+
+* Condition true for every value.
+
+```sql id="r8h2wu"
+SELECT *
+FROM Products
+WHERE price > ALL (
+    SELECT price
+    FROM Expensive_Items
+);
+```
+
+✅ Must satisfy all values.
+
+---
+
+# ANY vs ALL
+
+| ANY          | ALL         |
+| ------------ | ----------- |
+| At least one | Every value |
+| OR logic     | AND logic   |
+
+---
+
+# QUICK INTERVIEW POINTS
+
+## Difference: UNION vs UNION ALL
+
+| UNION              | UNION ALL        |
+| ------------------ | ---------------- |
+| Removes duplicates | Keeps duplicates |
+| Slower             | Faster           |
+
+---
+
+## Difference: INNER vs LEFT JOIN
+
+| INNER JOIN        | LEFT JOIN       |
+| ----------------- | --------------- |
+| Only matched rows | All left rows   |
+| No match removed  | No match = NULL |
+
+---
+

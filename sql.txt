@@ -284,7 +284,7 @@ The MIN() function returns the smallest value of the selected column.
 
 The MIN() function works with numeric, string, and date data types.
 
-MIN() Example 
+MIN() Example
 Return the lowest price in the Price column, in the "Products" table:
 
 SELECT MIN(Price)
@@ -601,3 +601,195 @@ Alias for table:
 
 SELECT column_name(s)
 FROM table_name AS alias_name;
+
+
+
+
+
+
+
+SQL INNER JOIN
+The INNER JOIN returns only rows that have matching values in both tables.
+
+Tip: You can use just JOIN instead of INNER JOIN, as INNER is the default join type.
+
+SQL INNER JOIN
+
+INNER JOIN Syntax
+SELECT column_name(s)
+FROM table1
+INNER JOIN table2
+ON table1.column_name = table2.column_name;
+
+Note: The syntax combines two tables based on a related column, and the ON keyword is used to specify the matching condition.
+
+Note: INNER JOIN returns only rows with a match in both tables. This means that if there is a product with no CategoryID, or with a CategoryID not present in the Categories table, that row will not be returned in the result.
+
+JOIN Multiple Tables
+You can join more than two tables by adding multiple INNER JOIN clauses in your query.
+
+The following SQL selects all orders with customer and shipper information:
+
+Example
+SELECT Orders.OrderID, Customers.CustomerName, Shippers.ShipperName
+FROM Orders
+INNER JOIN Customers ON Orders.CustomerID = Customers.CustomerID
+INNER JOIN Shippers ON Orders.ShipperID = Shippers.ShipperID;
+
+SQL LEFT JOIN
+The LEFT JOIN returns all rows from the left table (table1), and only the matched rows from the right table (table2).
+
+If there is no match in the right table, the result for the columns from the right table will be NULL.
+
+The LEFT JOIN and LEFT OUTER JOIN keywords are equal - the OUTER keyword is optional.
+
+SQL LEFT JOIN
+
+LEFT JOIN Syntax
+SELECT column_name(s)
+FROM table1
+LEFT JOIN table2
+ON table1.column_name = table2.column_name;
+Note: The syntax combines two tables based on a related column, and the ON keyword is used to specify the matching condition.
+
+SQL RIGHT JOIN
+The RIGHT JOIN returns all rows from the right table (table2), and only the matched rows from the left table (table1).
+
+If there is no match in the left table, the result for the columns from the left table will be NULL.
+
+The RIGHT JOIN and RIGHT OUTER JOIN keywords are equal - the OUTER keyword is optional.
+
+SQL RIGHT JOIN
+
+RIGHT JOIN Syntax
+SELECT column_name(s)
+FROM table1
+RIGHT JOIN table2
+ON table1.column_name = table2.column_name;
+
+SQL FULL JOIN
+The FULL JOIN returns all rows when there is a match in either the left or right table.
+
+If a row in the left table has no match in the right table, the result set includes the left row's data and NULL values for all columns of the right table.
+
+If a row in the right table has no match in the left table, the result set includes the right row's data and NULL values for all columns of the left table.
+
+The FULL JOIN and FULL OUTER JOIN keywords are equal - the OUTER keyword is optional.
+
+SQL FULL OUTER JOIN
+
+Note: FULL JOIN can potentially return very large result-sets!
+
+FULL JOIN Syntax
+SELECT column_name(s)
+FROM table1
+FULL JOIN table2
+ON table1.column_name = table2.column_name
+WHERE condition;
+
+SQL Self Join
+A self join is a regular join, but the table is joined with itself.
+
+Self Join Syntax
+SELECT column_name(s)
+FROM table1 T1, table1 T2
+WHERE condition;
+T1 and T2 are different table aliases for the same table.
+
+The SQL UNION Operator
+The UNION operator is used to combine the result-set of two or more SELECT statements.
+
+The UNION operator automatically removes duplicate rows from the result set.
+
+Requirements for UNION:
+
+Every SELECT statement within UNION must have the same number of columns
+The columns must also have similar data types
+The columns in every SELECT statement must also be in the same order
+UNION Syntax
+SELECT column_name(s) FROM table1
+UNION
+SELECT column_name(s) FROM table2;
+Note: The column names in the result-set are usually equal to the column names in the first SELECT statement.
+
+| Operation | Direction  |
+| --------- | ---------- |
+| UNION     | Up-Down    |
+| JOIN      | Left-Right |
+
+The SQL UNION ALL Operator
+The UNION ALL operator is used to combine the result-set of two or more SELECT statements.
+
+The UNION ALL operator includes all rows from each statement, including any duplicates.
+
+Requirements for UNION ALL: 
+
+Every SELECT statement within UNION ALL must have the same number of columns
+The columns must also have similar data types
+The columns in every SELECT statement must also be in the same order
+UNION ALL Syntax
+SELECT column_name(s) FROM table1
+UNION ALL
+SELECT column_name(s) FROM table2;
+Note: The column names in the result-set are usually equal to the column names in the first SELECT statement.
+
+
+The SQL GROUP BY Statement
+The GROUP BY statement is used to group rows that have the same values into summary rows, like "Find the number of customers in each country".
+
+The GROUP BY statement is almost always used in conjunction with aggregate functions, like COUNT(), MAX(), MIN(), SUM(), AVG(), to perform calculations on each group.
+
+GROUP BY Syntax
+SELECT column1, aggregate_function(column2), column3, ...
+FROM table_name
+WHERE condition
+GROUP BY column1, column3
+ORDER BY column_name;
+
+The SQL HAVING Clause
+The HAVING clause is used to filter the results of a GROUP BY query based on aggregate functions.
+
+Unlike the WHERE clause, which filters individual rows before grouping, the HAVING clause filters groups after the aggregation has been performed.
+
+HAVING Syntax
+SELECT column1, aggregate_function(column2), column3, ...
+FROM table_name
+WHERE condition
+GROUP BY column1, column3
+HAVING condition -- The condition on grouped data
+ORDER BY column_name;
+
+
+The SQL EXISTS Operator
+The EXISTS operator is used in a WHERE clause to check whether a subquery returns any rows.
+
+The EXISTS operator evaluates to TRUE if the subquery returns at least one row, and FALSE otherwise.
+
+EXISTS Syntax
+SELECT column_name(s)
+FROM table_name
+WHERE EXISTS (subquery);
+
+
+The SQL ANY Operator
+The ANY operator is used to compare a value to every value returned by a subquery.
+
+The ANY operator evaluates to TRUE if at least one value in the subquery result-set meet the condition.
+
+ANY Syntax
+SELECT column_name(s)
+FROM table_name
+WHERE column_name operator ANY (subquery);
+Note: The operator must be a standard comparison operator (=, <>, !=, >, >=, <, or <=).
+The SQL ALL Operator
+The ALL operator is used to compare a value to every value returned by a subquery.
+
+The ALL operator evaluates to TRUE if every value in the subquery result-set meet the condition.
+
+The ALL operator is typically used with WHERE and HAVING statements.
+
+ALL Syntax
+SELECT column_name(s)
+FROM table_name
+WHERE column_name operator ALL (subquery);
+Note: The operator must be a standard comparison operator (=, <>, !=, >, >=, <, or <=).
