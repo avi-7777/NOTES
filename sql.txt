@@ -793,3 +793,267 @@ SELECT column_name(s)
 FROM table_name
 WHERE column_name operator ALL (subquery);
 Note: The operator must be a standard comparison operator (=, <>, !=, >, >=, <, or <=).
+
+
+The SQL SELECT INTO Statement
+The SELECT INTO statement is used to create a new table and fill it with data from an existing table.
+
+The SELECT INTO statement is useful for creating backups or for creating a temporary table for analysis.
+
+Note: The new table will be created with the same column names and data types as defined in the source table. However, primary keys, indexes, or NOT NULL constraints are not automatically transferred.
+
+SELECT INTO Syntax
+Copy entire table into a new table:
+
+SELECT * INTO newtable [IN external_db]
+FROM sourcetable
+WHERE condition;
+Copy only some columns into a new table:
+
+SELECT column1, column2, column3, ...
+INTO newtable [IN external_db]
+FROM sourcetable
+WHERE condition;
+
+Your query syntax is correct for some databases like SQL Server, but in MySQL `SELECT INTO` is used differently.
+
+In MySQL, to create a new table from another table, use:
+
+```sql id="8qv5x2"
+CREATE TABLE library_2 AS
+SELECT *
+FROM library;
+```
+
+This will:
+
+✅ Create `library_2` table
+✅ Copy all rows from `library`
+
+---
+
+Why error occurred?
+
+```text id="9v0r1s"
+ERROR 1327: Undeclared variable
+```
+
+because MySQL does not support SQL Server style:
+
+```sql id="2m8k6f"
+SELECT * INTO new_table FROM old_table;
+```
+
+---
+
+MySQL equivalent:
+
+```sql id="5k3r8t"
+CREATE TABLE new_table AS
+SELECT * FROM old_table;
+```
+
+---
+
+Quick memory trick:
+
+| Database   | Syntax                                              |
+| ---------- | --------------------------------------------------- |
+| SQL Server | `SELECT * INTO new_table FROM old_table`            |
+| MySQL      | `CREATE TABLE new_table AS SELECT * FROM old_table` |
+
+
+The SQL INSERT INTO SELECT Statement
+The INSERT INTO SELECT statement is used to copy data from an existing table and insert it into another existing table.
+
+The INSERT INTO SELECT statement requires that the data types in source and target tables match.
+
+Note: The existing records in the target table are unaffected.
+
+INSERT INTO SELECT Syntax
+Copy all columns from one table to another table:
+
+INSERT INTO target_table
+SELECT * FROM source_table
+WHERE condition;
+Note: If you omit the column names, the number and order of columns in the source and target tables must be exactly the same!
+
+Copy only some columns from one table to another table:
+
+INSERT INTO target_table (column1, column2, column3, ...)
+SELECT column1, column2, column3, ...
+FROM source_table
+WHERE condition;
+
+
+The SQL CASE Expression
+The CASE expression is used to define different results based on specified conditions in an SQL statement.
+
+The CASE expression goes through the conditions and stops at the first match (like an if-then-else statement). So, once a condition is true, it will stop processing and return the result. If no conditions are true, it returns the value in the ELSE clause. If there is no ELSE clause and no conditions are true, it returns NULL.
+
+CASE Syntax
+CASE
+  WHEN condition1 THEN result1
+  WHEN condition2 THEN result2
+  WHEN conditionN THEN resultN
+  ELSE default_result
+END;
+ExampleGet your own SQL Server
+SELECT ProductName, Price,
+CASE
+  WHEN Price < 20 THEN 'Low Cost'
+  WHEN Price BETWEEN 20 AND 50 THEN 'Medium Cost'
+  ELSE 'High Cost'
+END AS PriceCategory
+FROM Products;
+
+
+
+SQL COALESCE(), IFNULL(), ISNULL(), and NVL() Functions
+Operations involving NULL values can sometimes lead to unexpected results.
+
+SQL has some built-in functions to handle NULL values, and the most common functions are:
+
+COALESCE() - The preferred standard. (Works in MySQL, SQL Server and Oracle)
+IFNULL() - (MySQL)
+ISNULL() - (SQL Server)
+NVL() - (Oracle)
+IsNull() - (MS Access)
+Note: A NULL value represents an unknown or missing data in a database field. It is not a value itself, but a placeholder to indicate the absence of data.
+
+
+The COALESCE() Function
+The COALESCE() function is the preferred standard for handling potential NULL values.
+
+The COALESCE() function returns the first non-NULL value in a list of values.
+
+The COALESCE() function works in MySQL, SQL Server, and Oracle (not in MS Access).
+
+Syntax
+COALESCE(val1, val2, ...., val_n)
+Here we use the COALESCE() function to replace NULL values with 0:
+
+SELECT ProductName, Price * (InStock + COALESCE(InOrder, 0))
+FROM Products;
+The IFNULL() Function (MySQL)
+The MySQL IFNULL() function replaces NULL with a specified value.
+
+Syntax
+IFNULL(expr, alt)
+Here we replace NULL values with 0:
+
+SELECT ProductName, Price * (InStock + IFNULL(InOrder, 0))
+FROM Products;
+The ISNULL() Function (SQL Server)
+The SQL Server ISNULL() function replaces NULL with a specified value.
+
+Syntax
+ISNULL(expr, alt)
+Here we replace NULL values with 0:
+
+SELECT ProductName, Price * (InStock + ISNULL(InOrder, 0))
+FROM Products;
+The NVL() Function (Oracle)
+The Oracle NVL() function replaces NULL with a specified value.
+
+Syntax
+NVL(expr, alt)
+Here we replace NULL values with 0:
+
+SELECT ProductName, Price * (InStock + NVL(InOrder, 0))
+FROM Products;
+The IsNull() Function (MS Access)
+The MS Access IsNull() function returns TRUE if the expression is NULL, otherwise FALSE.
+
+Syntax
+IsNull(expr)
+The MS Access IIf() function returns one of two parts, depending on the evaluation of the expression.
+
+Syntax
+IIf(expr, truepart, falsepart)
+expr - Required. The expression to evaluate
+truepart - Value to return if expr is True
+falsepart - Value to return if expr is False
+Here we replace NULL values with 0:
+
+SELECT ProductName, Price * (InStock + IIf(IsNull(InOrder), 0, InOrder))
+FROM Products;
+
+SQL Comments:
+sQL supports single-line comments --, and multi-line comments /* */.
+
+Note: Comments are not supported in Microsoft Access databases.
+Single-line comments start with -- and continue to the end of line.
+
+Any text after -- and to the end of the line will be ignored.
+
+
+
+
+SQL Operators
+SQL operators are keywords and symbols used to perform operations with data values.
+
+SQL operators are used in SQL statements like SELECT, WHERE, LIKE, etc.
+
+SQL operators is categorized into the following types:
+
+Arithmetic operators
+Comparison operators
+Compound operators
+Bitwise operators
+Logical operators
+
+SQL Arithmetic Operators
+Operator	Description	Example
++	Addition	
+-	Subtraction	
+*	Multiplication	
+/	Division	
+%	Modulus	
+SELECT 30 / 10;
+​
+
+
+
+SQL Comparison Operators
+Operator	Description	Example
+=	Equal to	
+>	Greater than	
+<	Less than	
+>=	Greater than or equal to	
+<=	Less than or equal to	
+<>	Not equal to	
+REMOVE ADS
+
+SQL Compound Operators
+Operator	Description
++=	Add equals
+-=	Subtract equals
+*=	Multiply equals
+/=	Divide equals
+%=	Modulo equals
+&=	Bitwise AND equals
+^=	Bitwise exclusive equals
+|*=	Bitwise OR equals
+
+SQL Bitwise Operators
+Operator	Description
+&	Bitwise AND
+|	Bitwise OR
+^	Bitwise exclusive OR
+~	Bitwise NOT
+
+SQL Logical Operators
+Operator	Description	Example
+ALL	TRUE if all of the subquery values meet the condition	
+AND	TRUE if all the conditions separated by AND is TRUE	
+ANY	TRUE if any of the subquery values meet the condition	
+BETWEEN	TRUE if the operand is within the range of comparisons	
+EXISTS	TRUE if the subquery returns one or more records	
+IN	TRUE if the operand is equal to one of a list of expressions	
+LIKE	TRUE if the operand matches a pattern	
+NOT	Displays a record if the condition(s) is NOT TRUE	
+OR	TRUE if any of the conditions separated by OR is TRUE	
+SOME	TRUE if any of the subquery values meet the condition
+-SELECT * FROM Products
+WHERE Price > SOME (SELECT Price FROM Products WHERE Price > 20);

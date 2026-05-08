@@ -818,3 +818,397 @@ WHERE price > ALL (
 
 ---
 
+# SQL Placement Ready Short Notes
+
+# 1. SELECT INTO / CREATE TABLE AS
+
+## Purpose
+
+Create a new table using data from an existing table.
+
+## SQL Server
+
+```sql
+SELECT * INTO new_table
+FROM old_table;
+```
+
+## MySQL
+
+```sql
+CREATE TABLE new_table AS
+SELECT * FROM old_table;
+```
+
+## Important
+
+* Copies data + column structure
+* Does NOT copy:
+
+  * Primary Key
+  * Foreign Key
+  * Indexes
+  * Constraints
+
+## Use Cases
+
+* Backup table
+* Temporary analysis table
+* Data migration
+
+---
+
+# 2. INSERT INTO SELECT
+
+## Purpose
+
+Copy data from one existing table to another existing table.
+
+## Syntax
+
+```sql
+INSERT INTO target_table
+SELECT * FROM source_table;
+```
+
+## Specific Columns
+
+```sql
+INSERT INTO target_table(id, name)
+SELECT id, name
+FROM source_table;
+```
+
+## Important
+
+* Target table must already exist
+* Datatypes should match
+* Existing records remain safe
+
+## Difference
+
+| Statement              | Creates Table | Copies Data |
+| ---------------------- | ------------- | ----------- |
+| CREATE TABLE AS SELECT | ✅             | ✅           |
+| INSERT INTO SELECT     | ❌             | ✅           |
+
+---
+
+# 3. CASE Expression
+
+## Purpose
+
+Works like if-else in SQL.
+
+## Syntax
+
+```sql
+CASE
+   WHEN condition THEN result
+   ELSE result
+END
+```
+
+## Example
+
+```sql
+SELECT name, salary,
+CASE
+   WHEN salary > 50000 THEN 'High'
+   WHEN salary > 30000 THEN 'Medium'
+   ELSE 'Low'
+END AS category
+FROM employees;
+```
+
+## Important
+
+* Stops at first TRUE condition
+* ELSE is optional
+* Used in:
+
+  * SELECT
+  * ORDER BY
+  * UPDATE
+
+---
+
+# 4. NULL Handling Functions
+
+## COALESCE() → Standard Function
+
+Returns first non-NULL value.
+
+```sql
+SELECT COALESCE(NULL, NULL, 10, 20);
+```
+
+Result:
+
+```sql
+10
+```
+
+---
+
+## IFNULL() → MySQL
+
+```sql
+SELECT IFNULL(NULL, 0);
+```
+
+---
+
+## ISNULL() → SQL Server
+
+```sql
+SELECT ISNULL(NULL, 0);
+```
+
+---
+
+## NVL() → Oracle
+
+```sql
+SELECT NVL(NULL, 0);
+```
+
+---
+
+## Quick Memory Trick
+
+| Database     | Function   |
+| ------------ | ---------- |
+| MySQL        | IFNULL()   |
+| SQL Server   | ISNULL()   |
+| Oracle       | NVL()      |
+| Standard SQL | COALESCE() |
+
+---
+
+# 5. SQL Comments
+
+## Single Line
+
+```sql
+-- This is comment
+```
+
+## Multi Line
+
+```sql
+/* This is
+multi line comment */
+```
+
+## Purpose
+
+* Improve readability
+* Explain query
+* Debugging
+
+---
+
+# 6. SQL Operators
+
+# Arithmetic Operators
+
+| Operator | Meaning        |
+| -------- | -------------- |
+| +        | Addition       |
+| -        | Subtraction    |
+| *        | Multiplication |
+| /        | Division       |
+| %        | Modulus        |
+
+Example:
+
+```sql
+SELECT 20 / 5;
+```
+
+---
+
+# Comparison Operators
+
+| Operator | Meaning       |
+| -------- | ------------- |
+| =        | Equal         |
+| >        | Greater Than  |
+| <        | Less Than     |
+| >=       | Greater Equal |
+| <=       | Less Equal    |
+| <>       | Not Equal     |
+
+Example:
+
+```sql
+SELECT * FROM employees
+WHERE salary > 50000;
+```
+
+---
+
+# Logical Operators
+
+| Operator | Purpose             |
+| -------- | ------------------- |
+| AND      | All conditions TRUE |
+| OR       | Any condition TRUE  |
+| NOT      | Reverse condition   |
+| IN       | Match list          |
+| BETWEEN  | Range check         |
+| LIKE     | Pattern match       |
+| EXISTS   | Check subquery      |
+| ALL      | All values satisfy  |
+| ANY/SOME | Any value satisfy   |
+
+---
+
+# IN Operator
+
+```sql
+SELECT * FROM employees
+WHERE department IN ('IT', 'HR');
+```
+
+---
+
+# BETWEEN Operator
+
+```sql
+SELECT * FROM employees
+WHERE salary BETWEEN 30000 AND 50000;
+```
+
+---
+
+# LIKE Operator
+
+| Symbol | Meaning                  |
+| ------ | ------------------------ |
+| %      | Any number of characters |
+| _      | Single character         |
+
+Example:
+
+```sql
+SELECT * FROM employees
+WHERE name LIKE 'A%';
+```
+
+---
+
+# EXISTS Operator
+
+Returns TRUE if subquery returns rows.
+
+```sql
+SELECT name
+FROM employees e
+WHERE EXISTS (
+   SELECT 1
+   FROM department d
+   WHERE d.id = e.dept_id
+);
+```
+
+---
+
+# SOME / ANY Operator
+
+## Meaning
+
+Condition becomes TRUE if ANY subquery value satisfies condition.
+
+## Example
+
+```sql
+SELECT * FROM Products
+WHERE Price > SOME (
+   SELECT Price
+   FROM Products
+   WHERE Price > 20
+);
+```
+
+## Explanation
+
+* Subquery returns prices > 20
+* Outer query checks:
+
+  * Is product price greater than at least one returned value?
+
+---
+
+# ALL Operator
+
+## Meaning
+
+Condition must satisfy ALL returned values.
+
+```sql
+SELECT * FROM employees
+WHERE salary > ALL (
+   SELECT salary
+   FROM employees
+   WHERE department = 'HR'
+);
+```
+
+---
+
+# Placement Important Interview Points
+
+## Difference: DELETE vs TRUNCATE vs DROP
+
+| Command  | Removes Data | Removes Structure |
+| -------- | ------------ | ----------------- |
+| DELETE   | ✅            | ❌                 |
+| TRUNCATE | ✅            | ❌                 |
+| DROP     | ✅            | ✅                 |
+
+---
+
+# Difference: WHERE vs HAVING
+
+| WHERE                         | HAVING              |
+| ----------------------------- | ------------------- |
+| Filters rows                  | Filters groups      |
+| Used before GROUP BY          | Used after GROUP BY |
+| Cannot use aggregate directly | Can use aggregate   |
+
+---
+
+# Most Asked Placement Concepts
+
+* JOINS
+* GROUP BY
+* HAVING
+* Subqueries
+* CASE
+* NULL handling
+* Normalization
+* Indexing
+* Transactions
+* ACID properties
+
+---
+
+# Fast Revision Formula
+
+```text
+CREATE TABLE AS SELECT  -> create + copy
+INSERT INTO SELECT      -> copy only
+CASE                    -> if-else
+COALESCE                -> first non-null
+IFNULL                  -> MySQL null handler
+ISNULL                  -> SQL Server null handler
+NVL                     -> Oracle null handler
+LIKE %                  -> multiple chars
+LIKE _                  -> single char
+EXISTS                  -> checks rows exist
+ANY/SOME                -> any value match
+ALL                     -> all values match
+```
+
